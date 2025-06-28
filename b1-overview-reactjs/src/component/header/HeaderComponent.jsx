@@ -1,8 +1,11 @@
 // khi dat ten component tranh :
 // 1. Khong trung ten vs cac the HTML
 // 2. Nen viet hoa chu cai dau theo lac da
+import { useState } from "react";
 import "./header.css";
 function HeaderComponent1() {
+  const [a, setA] = useState(0);
+  // Chi co gia tri con
   // ten cua componenet & ten file => co the khac nhau
   // nhung thuong nen dat ten trung nhau
   return (

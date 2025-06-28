@@ -1,5 +1,6 @@
 import FooterComponent from "./component/FooterComponent";
 import HeaderComponent1 from "./component/header/HeaderComponent";
+import MainComponent from "./component/main/MainComponent";
 
 function App() {
   return (
@@ -8,7 +9,7 @@ function App() {
     <>
       {/* Chi nen goi component => TAO RA CAC FILE .JSX => APP.JSX => GOI  */}
       <HeaderComponent1></HeaderComponent1>
-      {/* <PageComponnt></PageComponnt> */}
+      <MainComponent></MainComponent>
       <FooterComponent></FooterComponent>
     </>
   );
