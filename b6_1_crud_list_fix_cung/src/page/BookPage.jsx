@@ -205,7 +205,7 @@ export default function BookPage() {
         </thead>
         <tbody>
           {books.map((p, index) => (
-            <tr>
+            <tr key={p.id}>
               <td>{index}</td>
               <td>{p.id}</td>
               <td>{p.ten}</td>
