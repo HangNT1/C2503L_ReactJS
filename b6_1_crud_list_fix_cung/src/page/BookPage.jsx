@@ -1,148 +1,7 @@
 import { useState } from "react";
 import BookFormComponent from "../component/BookFormComponent";
-
 export default function BookPage() {
   const listDefaultBook = [
-    {
-      ten: "ten 1",
-      loai: 2,
-      tacGia: "tacGia 1",
-      gia: 19,
-      id: "1",
-    },
-    {
-      ten: "ten 2",
-      loai: 8,
-      tacGia: "tacGia 2",
-      gia: 19,
-      id: "2",
-    },
-    {
-      ten: "ten 3",
-      loai: 80,
-      tacGia: "tacGia 3",
-      gia: 17,
-      id: "3",
-    },
-    {
-      ten: "ten 4",
-      loai: 42,
-      tacGia: "tacGia 4",
-      gia: 92,
-      id: "4",
-    },
-    {
-      ten: "ten 5",
-      loai: 8,
-      tacGia: "tacGia 5",
-      gia: 49,
-      id: "5",
-    },
-    {
-      ten: "ten 6",
-      loai: 56,
-      tacGia: "tacGia 6",
-      gia: 54,
-      id: "6",
-    },
-    {
-      ten: "ten 7",
-      loai: 76,
-      tacGia: "tacGia 7",
-      gia: 25,
-      id: "7",
-    },
-    {
-      ten: "ten 8",
-      loai: 97,
-      tacGia: "tacGia 8",
-      gia: 81,
-      id: "8",
-    },
-    {
-      ten: "ten 9",
-      loai: 30,
-      tacGia: "tacGia 9",
-      gia: 47,
-      id: "9",
-    },
-    {
-      ten: "ten 10",
-      loai: 13,
-      tacGia: "tacGia 10",
-      gia: 61,
-      id: "10",
-    },
-    {
-      ten: "ten 11",
-      loai: 7,
-      tacGia: "tacGia 11",
-      gia: 3,
-      id: "11",
-    },
-    {
-      ten: "ten 12",
-      loai: 4,
-      tacGia: "tacGia 12",
-      gia: 36,
-      id: "12",
-    },
-    {
-      ten: "ten 13",
-      loai: 81,
-      tacGia: "tacGia 13",
-      gia: 66,
-      id: "13",
-    },
-    {
-      ten: "ten 14",
-      loai: 85,
-      tacGia: "tacGia 14",
-      gia: 2,
-      id: "14",
-    },
-    {
-      ten: "ten 15",
-      loai: 84,
-      tacGia: "tacGia 15",
-      gia: 31,
-      id: "15",
-    },
-    {
-      ten: "ten 16",
-      loai: 9,
-      tacGia: "tacGia 16",
-      gia: 36,
-      id: "16",
-    },
-    {
-      ten: "ten 17",
-      loai: 23,
-      tacGia: "tacGia 17",
-      gia: 84,
-      id: "17",
-    },
-    {
-      ten: "ten 18",
-      loai: 78,
-      tacGia: "tacGia 18",
-      gia: 53,
-      id: "18",
-    },
-    {
-      ten: "ten 19",
-      loai: 7,
-      tacGia: "tacGia 19",
-      gia: 35,
-      id: "19",
-    },
-    {
-      ten: "ten 20",
-      loai: 43,
-      tacGia: "tacGia 20",
-      gia: 71,
-      id: "20",
-    },
     {
       ten: "ten 21",
       loai: 25,
@@ -187,11 +46,101 @@ export default function BookPage() {
     },
   ];
   const [books, setBooks] = useState(listDefaultBook);
+  const [form, setForm] = useState({
+    ten: "",
+    loai: "",
+    tacGia: "",
+    gia: "",
+  });
+  const [isUpdate, setIsUpdate] = useState(true); // Kiem tra xem la Update hay la Add
+  // true => Add
+  // false => Update
+  const deleteBook = (id) => {
+    const copy = [...books];
+    copy.splice(
+      copy.findIndex((b) => b.id === id),
+      1
+    );
+    setBooks(copy);
+  };
+  // Dùng để cập nhật giá trị input khi người dùng nhập, và cập nhật đúng trường (field) đó trong object form.
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm({
+      ...form,
+      [name]: value,
+    });
+  };
+
+  const [id, setId] = useState(20); // vì dữ liệu mẫu có tới id 20
+  const [idUpdate, setIdUpdate] = useState(null); // luu id can update
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!isUpdate) {
+      // Update data
+      // B1: Lay gia tri cua doi tuong update
+      const updateBook = {
+        ...form,
+        id: idUpdate, // id cu can update
+        gia: Number(form.gia),
+      };
+      const booksUpdate = books.map((b) =>
+        b.id === idUpdate ? updateBook : b
+      );
+      setBooks(booksUpdate);
+      // reset data
+      setIdUpdate(null);
+      setIsUpdate(true);
+    } else {
+      // Add
+      setBooks([
+        ...books,
+        {
+          ...form,
+          id: id,
+          gia: Number(form.gia),
+          // loai: Number(form.loai),
+          // id: id,
+        },
+      ]);
+      setId(id + 1);
+    }
+    // Sau khi add & Update deu reset lai form
+    setForm({
+      ten: "",
+      loai: "",
+      tacGia: "",
+      gia: "",
+    });
+  };
+  const handeleDetail = (book) => {
+    setForm(book);
+    setIsUpdate(false);
+    setIdUpdate(book.id); // Lay ID cua doi tuong click
+  };
+  const handleReset = () => {
+    setIsUpdate(true);
+    setIdUpdate(null);
+    setForm({
+      ten: "",
+      loai: "",
+      tacGia: "",
+      gia: "",
+    });
+  };
   return (
     <>
-      <BookFormComponent />
+      <BookFormComponent
+        form={form}
+        editingId={isUpdate}
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
+        resetData={handleReset}
+      />
+
       <h1>Day la trang sach</h1>
-      <table>
+      <table border={1}>
         <thead>
           <tr>
             <th>STT</th>
@@ -213,8 +162,8 @@ export default function BookPage() {
               <td>{p.tacGia}</td>
               <td>{p.gia}</td>
               <td>
-                <button>Edit</button>
-                <button>Remove</button>
+                <button onClick={() => handeleDetail(p)}>Detail</button>
+                <button onClick={() => deleteBook(p.id)}>Remove</button>
               </td>
             </tr>
           ))}
